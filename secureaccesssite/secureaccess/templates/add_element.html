@@ -1,5 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
-Add element
+    <div class="container add_element">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h2>Add element</h2>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab"
+                               aria-controls="home" aria-selected="true">File</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">or</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="url-tab" data-toggle="tab" href="#url" role="tab"
+                               aria-controls="profile" aria-selected="false">Url</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="file" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input name="file" type="file" class="custom-file-input" id="inputFile">
+                                    <label class="custom-file-label" for="inputFile">Choose file</label>
+                                    {{ form.file.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="url" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="form-group">
+                                <label class="sr-only" for="inputUrl">Url</label>
+                                <input name="url" type="text" class="form-control" id="inputUrl" placeholder="Type url">
+                                {{ form.url.errors }}
+                            </div>
+                        </div>
+                        {{ form.non_field_errors }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            $('#inputFile').on('change', function () {
+                var fileName = $(this).val();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+
+            const tabToShow =
+            {% if form.url.errors %}
+                'url'
+            {% else %}
+                'file'
+            {% endif %}
+            ;
+            $('#' + tabToShow + '-tab').tab('show');
+
+            $('a[data-toggle="tab222"]').on('shown.bs.tab', function (e) {
+                if (e.relatedTarget.id === 'url-tab') {
+                    $('#inputUrl').val('');
+                } else if (e.relatedTarget.id === 'file-tab') {
+                    $('#inputFile').val('');
+                    $('.custom-file-label').html('Choose file');
+                }
+            });
+        };
+    </script>
 {% endblock %}

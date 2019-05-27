@@ -39,7 +39,7 @@ class AbstractSecureAccess(models.Model):
 
 class Element(AbstractSecureAccess):
     file = models.FileField(null=True, blank=True)
-    url = models.URLField(null=True)
+    url = models.URLField(null=True, blank=True)
     accessed = models.BooleanField(default=False)
 
     @classmethod

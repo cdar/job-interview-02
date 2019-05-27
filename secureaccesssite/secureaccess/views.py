@@ -1,4 +1,7 @@
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import RedirectView, CreateView
+
+from secureaccess.forms import ElementForm
+from secureaccess.models import Element
 
 
 class IndexView(RedirectView):
@@ -8,5 +11,8 @@ class IndexView(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 
-class AddElementView(TemplateView):
+class AddElementView(CreateView):
+    form_class = ElementForm
+    model = Element
     template_name = "add_element.html"
+
