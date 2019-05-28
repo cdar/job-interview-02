@@ -24,6 +24,7 @@ class GetElementView(mixins.RetrieveModelMixin, GenericAPIView):
         if element is None:
             raise Http404()
         self.check_object_permissions(self.request, element)
+        element.update_accessed()
         return element
 
     def post(self, request, *args, **kwargs):

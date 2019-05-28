@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    settings = 'secureaccesssite.settings.dev'
+    settings = 'secureaccesssite.settings.heroku'
 
     if 'test' in sys.argv:
         settings = 'tests.test_settings'
