@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from secureaccess import urls as secureaccess_urls
+from secureaccessapi import urls as secureaccessapi_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(secureaccess_urls)),
+    path('api/', include(secureaccessapi_urls)),
 ]

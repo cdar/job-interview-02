@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'secureaccess'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'secureaccess',
+    'secureaccessapi'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,11 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 MEDIA_URL = '/media/'
 
 ROOT_URLCONF = 'secureaccesssite.urls.base'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
+APPEND_SLASH = False

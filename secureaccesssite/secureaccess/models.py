@@ -27,11 +27,19 @@ class AbstractSecureAccess(models.Model):
             created_at__gt=timezone.now() - timedelta(hours=24)
         ).first()
 
+    @classmethod
+    def get_random_password(cls):
+        return get_random_string()
+
+    @classmethod
+    def make_password(cls, raw_password):
+        return make_password(raw_password)
+
     def set_password(self, raw_password):
-        self.password = make_password(raw_password)
+        self.password = self.make_password(raw_password)
 
     def make_random_password(self):
-        raw_password = get_random_string()
+        raw_password = self.get_random_password()
         self.set_password(raw_password)
         return raw_password
 
