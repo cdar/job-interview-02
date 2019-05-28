@@ -4,7 +4,7 @@ import sys
 from django.contrib.auth import get_user_model
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'secureaccesssite.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'secureaccesssite.settings.dev')
 sys.path.append('secureaccesssite')
 
 django.setup()

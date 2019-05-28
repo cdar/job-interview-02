@@ -42,6 +42,11 @@ class Element(AbstractSecureAccess):
     url = models.URLField(null=True, blank=True)
     accessed = models.BooleanField(default=False)
 
+    def update_accessed(self):
+        if not self.accessed:
+            self.accessed = True
+            self.save()
+
     @classmethod
     def get_stats(cls):
         return cls._transform(cls._query_stats())

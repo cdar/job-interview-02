@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% if not messages %}
+        <meta http-equiv="REFRESH" content="0;url={% url 'index' %}">
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container add_element">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h2>New Element</h2>
+                <h4>Please copy these credentials:</h4>
+
+                {% for message in messages %}
+                    {% if 'sec1' in message.tags %}
+                        <div class="form-group">
+                            <label for="elementsUrl">Element's shareable link:</label>
+                            <input type="text" class="form-control" id="elementsUrl" readonly
+                                   value="{{ request.get_host }}{% url 'request_element' message %}">
+                        </div>
+                    {% elif 'sec2' in message.tags %}
+                        <div class="form-group">
+                            <label for="elementsPassword">Element's password:</label>
+                            <input type="text" class="form-control" id="elementsPassword" readonly
+                                   value="{{ message }}">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <a type="submit" class="btn btn-primary" href="/" role="button">Back</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

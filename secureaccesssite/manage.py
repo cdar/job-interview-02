@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    settings = 'secureaccesssite.settings'
+    settings = 'secureaccesssite.settings.dev'
 
     if 'test' in sys.argv:
         settings = 'tests.test_settings'
