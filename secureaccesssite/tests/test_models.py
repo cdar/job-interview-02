@@ -66,7 +66,7 @@ class TestElementDB(DjangoTestCase):
     def setUpClass(cls, mock_now):
         super().setUpClass()
 
-        def create_element(year, month, day, file=False, url=False, accessed=True):
+        def create_element(year, month, day, file=False, url=False, accessed=1):
             params = {'accessed': accessed}
             mock_now.return_value = now().replace(year, month, day)
             if file:
@@ -83,11 +83,11 @@ class TestElementDB(DjangoTestCase):
 
         create_element(2019, 1, 4, file=True)
         create_element(2019, 1, 4, file=True)
-        create_element(2019, 1, 4, file=True, accessed=False)
+        create_element(2019, 1, 4, file=True, accessed=0)
         create_element(2019, 1, 6, file=True)
         create_element(2019, 1, 6, url=True)
         create_element(2019, 1, 7, url=True)
-        create_element(2019, 1, 7, url=True, accessed=False)
+        create_element(2019, 1, 7, url=True, accessed=0)
         create_element(2019, 1, 9)
         create_element(2019, 1, 14, file=True)
 

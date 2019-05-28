@@ -65,11 +65,14 @@ class TestRequestElementView(DjangoTestCase):
 
     def test_form_valid(self):
         element = Element.objects.create(url='earth.com')
-        self.assertFalse(element.accessed)
+        self.assertEqual(0, element.accessed)
         view = RequestElementView()
         view.kwargs = {'uuid': str(element.shareable_link)}
         form = Mock(instance=element)
         response = view.form_valid(form)
-        self.assertEqual(response.url, element.url)
         element.refresh_from_db()
-        self.assertTrue(element.accessed)
+        self.assertEqual(response.url, element.url)
+        self.assertEqual(1, element.accessed)
+        response = view.form_valid(form)
+        element.refresh_from_db()
+        self.assertEqual(2, element.accessed)

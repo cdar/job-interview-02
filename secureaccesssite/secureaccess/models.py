@@ -40,12 +40,11 @@ class AbstractSecureAccess(models.Model):
 class Element(AbstractSecureAccess):
     file = models.FileField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
-    accessed = models.BooleanField(default=False)
+    accessed = models.IntegerField(default=0)
 
     def update_accessed(self):
-        if not self.accessed:
-            self.accessed = True
-            self.save()
+        self.accessed += 1
+        self.save()
 
     @classmethod
     def get_stats(cls):
@@ -53,7 +52,7 @@ class Element(AbstractSecureAccess):
 
     @classmethod
     def _query_stats(cls):
-        return cls.objects.filter(accessed=True) \
+        return cls.objects.filter(accessed__gt=0) \
             .values('created_at__date') \
             .annotate(
                 files=Count('file', ~(Q(file=None) | Q(file=''))),
