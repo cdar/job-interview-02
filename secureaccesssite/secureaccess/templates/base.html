@@ -1,6 +1,6 @@
 <!doctype html>
 {% load static %}
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -14,7 +14,7 @@
     <title>{% block title %}Secure Access App{% endblock %}</title>
     {% block head %}{% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Secure Access App</a>
     {% if user.is_authenticated %}
@@ -24,8 +24,16 @@
     {% endif %}
 </nav>
 
-{% block content %}
-{% endblock %}
+<main class="flex-shrink-0" role="main">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="footer mt-auto py-3">
+    <div class="container">
+        <span class="text-muted">User agent: {{ request.user_agent }}</span>
+    </div>
+</footer>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -14,5 +14,6 @@ User = get_user_model()
 for i in range(3):
     name = 'user{}'.format(i)
     User.objects.create_user(name, password=name)
+    print('Created', name)
 
 User.objects.create_superuser('admin', 'admin@localhost', 'admin')

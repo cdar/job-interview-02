@@ -1,7 +1,9 @@
 import uuid
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Count, Q
 from django.utils import timezone
@@ -76,4 +78,35 @@ class Element(AbstractSecureAccess):
             str_date = format_date(o.pop('created_at__date'))
             result[str_date] = o
         return result
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, primary_key=True, related_name='profile', on_delete=models.CASCADE
+    )
+    user_agent = models.CharField(max_length=1024, blank=True)
+
+    @classmethod
+    def get_user_agent_cache_key(cls, request):
+        return 'user_agent_{}'.format(request.user.pk)
+
+    @classmethod
+    def get_last_user_agent_cached(cls, request):
+        cache_key = cls.get_user_agent_cache_key(request)
+        user_agent = cache.get(cache_key)
+        if user_agent is None:
+            user_agent = request.user.profile.user_agent
+            cache.set(cache_key, user_agent)
+        return user_agent
+
+    @classmethod
+    def get_last_user_agent_and_update_if_changed_cached(cls, request):
+        last_user_agent = cls.get_last_user_agent_cached(request)
+        current_user_agent = request.META.get('HTTP_USER_AGENT')
+        if last_user_agent != current_user_agent:
+            cache_key = cls.get_user_agent_cache_key(request)
+            request.user.profile.user_agent = current_user_agent
+            request.user.profile.save()
+            cache.set(cache_key, current_user_agent)
+        return last_user_agent
 
